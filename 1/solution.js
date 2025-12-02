@@ -29,13 +29,33 @@ const moveDial = input => input
 
 // Part 2 ---------------------------------------------------------------------
 
-// const placeholder = () => {};
+const countAllZeroes = input => input
+    .split('\n')
+    .map(i => [i[0] == 'R' ? 1 : -1 , Number(i.substring(1))])
+    .reduce(([position, total], [heading, ticks]) => {
 
-// console.log('2) eg:    ', placeholder(eg));
-// console.log('2) input: ', placeholder(input));
+        const result = position + (heading * ticks);
+        const boundedPosition = ((result % 100) + 100) % 100;
+
+        let newTotal = total;
+        if ((result > 99 || result <= 0) && position !== 0) {
+            ++newTotal
+
+            if (Math.floor(ticks / 100) > 1) {
+                newTotal = newTotal + Math.floor(ticks / 100)
+            }
+        }
+
+        return [boundedPosition, newTotal];
+    }, [50, 0]);
+
+console.log('2) eg:    ', countAllZeroes(eg));
+console.log('2) input: ', countAllZeroes(input));
 
 /*
 Wrong guesses:
+    2) 2605 too low
+    2) 5544 too low
 
 Correct:
     1) 1055
